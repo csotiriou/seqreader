@@ -24,10 +24,12 @@
 	fp = fopen([filePath cStringUsingEncoding:NSUTF8StringEncoding], "r");
 	if (fp) {
 		while ( (read =  getline(&line, &len, fp)) != -1) {
-			NSString *currentLine = [[NSString alloc] initWithBytes:line length:read encoding:encoding];
-			if (currentLine) {
-				if ([self.delegate respondsToSelector:@selector(fileReader:didEncounterLine:)]) {
-					[self.delegate fileReader:self didEncounterLine:currentLine];
+			@autoreleasepool {
+				NSString *currentLine = [[NSString alloc] initWithBytes:line length:read encoding:encoding];
+				if (currentLine) {
+					if ([self.delegate respondsToSelector:@selector(fileReader:didEncounterLine:)]) {
+						[self.delegate fileReader:self didEncounterLine:currentLine];
+					}
 				}
 			}
 		}
